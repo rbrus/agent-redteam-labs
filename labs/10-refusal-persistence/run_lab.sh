@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
-# Lab 06: Tool Agency Abuse Harness — real ADK agent
+# Lab 10: Refusal Persistence Harness — real ADK agent
 # Copyright 2026 Radoslaw Brus. SPDX-License-Identifier: Apache-2.0
 #
-# This lab drives the real Atlas agent from the adk-demo-target repo and reads
-# its session state for ground truth. It needs `google-adk` importable and the
-# agent's model reachable (Vertex AI credentials). The adk-demo-target repo's
-# own virtualenv satisfies the import requirement.
+# Needs `google-adk` importable and the Atlas model reachable (Vertex AI creds).
+# The adk-demo-target virtualenv satisfies the import requirement.
 
 set -euo pipefail
 
@@ -14,16 +12,15 @@ cd "$SCRIPT_DIR"
 
 TARGET_PATH="${ADK_DEMO_TARGET_PATH:-$(cd "$SCRIPT_DIR/../../../adk-demo-target" 2>/dev/null && pwd || true)}"
 
-# Prefer an explicit interpreter, then the adk-demo-target venv, then python3.
-PY="${LAB06_PYTHON:-}"
+PY="${LAB10_PYTHON:-}"
 if [[ -z "$PY" && -n "$TARGET_PATH" && -x "$TARGET_PATH/.venv/bin/python" ]]; then
     PY="$TARGET_PATH/.venv/bin/python"
 fi
 PY="${PY:-python3}"
 
-echo ">>> Lab 06: tool agency abuse against the REAL Atlas ADK agent"
+echo ">>> Lab 10: refusal persistence against the REAL Atlas ADK agent"
 echo "    Interpreter: $PY"
 echo "    Target repo: ${TARGET_PATH:-<unset: set ADK_DEMO_TARGET_PATH>}"
 echo
 
-exec "$PY" tool_hijack_test.py
+exec "$PY" refusal_persistence_test.py
